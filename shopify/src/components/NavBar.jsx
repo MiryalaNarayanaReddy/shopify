@@ -2,7 +2,7 @@ import Logo from '../assets/icons/logo_big.png'
 import CartIcon from '../assets/icons/cart_icon.png'
 import { useEffect, useState } from 'react';
 
-function NavItem({ title, link, selected , onclick}) {
+function NavItem({ title, link, selected, onclick }) {
     return (
         <div className="text-xl" >
 
@@ -15,16 +15,16 @@ function NavItem({ title, link, selected , onclick}) {
 }
 
 
-function NavBar() {
+function NavBar({ selectedNavItem }) {
 
     const [cartItems, setCartItems] = useState(null);
-    const [selectedNavItem, setSelectedNavItem] = useState('Shop'); // Shop, Men, Women, Kids
 
-    console.log(selectedNavItem);
+
+    // console.log(selectedNavItem);
 
     useEffect(() => {
 
-       setCartItems(
+        setCartItems(
             {
                 products: [
                     {
@@ -49,13 +49,17 @@ function NavBar() {
             }
         )
     }, []);
-      
-        
-    const navclick = (e, title) => {
-    console.log(selectedNavItem);
 
-        e.preventDefault();
-        setSelectedNavItem(title);
+
+    const navclick = (e, title) => {
+        console.log(selectedNavItem);
+
+        // e.preventDefault();
+        // setSelectedNavItem(title);
+
+        localStorage.setItem('category', title);
+
+        window.location.href = '/collections/' + title;
     }
 
 
@@ -63,7 +67,7 @@ function NavBar() {
         <div className="flex flex-row justify-around bg-white shadow-lg fixed top-0 w-full z-10 h-16 items-center">
 
             {/*  website name */}
-            <div className="flex flex-row items-center gap-2 cursor-pointer" onClick={(e) => navclick(e, 'Shop')} >
+            <div className="flex flex-row items-center gap-2 cursor-pointer" onClick={() => window.location.href = '/'}>
                 <div>
                     <img src={Logo} alt="icon" className="w-10 h-10" />
                 </div>
@@ -78,25 +82,27 @@ function NavBar() {
 
             <div className="grid grid-cols-4 gap-4">
                 <div className="col-span-1">
-                    <NavItem title="Shop" link="#" selected={selectedNavItem === 'Shop'} onclick={(e) => navclick(e, 'Shop')} />
+                    <NavItem title="Shop" link="/" selected={selectedNavItem === 'shop'} onclick={(e) => navclick(e, 'shop')} />
                 </div>
                 <div className="col-span-1">
-                    <NavItem title="Men" link="#" selected={selectedNavItem === 'Men'} onclick={ (e) => navclick(e,'Men') } />
+                    <NavItem title="Men" link="/collections/men" selected={selectedNavItem === 'men'} onclick={(e) => navclick(e, 'men')} />
                 </div>
                 <div className="col-span-1">
-                    <NavItem title="Women" link="#" selected={selectedNavItem === "Women"} onclick={(e) => navclick(e,'Women') } />
+                    <NavItem title="Women" link="#" selected={selectedNavItem === "omen"} onclick={(e) => navclick(e, 'women')} />
                 </div>
                 <div className="col-span-1">
-                    <NavItem title="Kids" link="#" selected={selectedNavItem === "Kids"} onclick={(e) => navclick(e,'Kids') } />
+                    <NavItem title="Kids" link="#" selected={selectedNavItem === "kids"} onclick={(e) => navclick(e, 'kids')} />
                 </div>
             </div>
 
 
             {/*  login */}
             <div className="flex flex-row items-center gap-4">
-                <div className=" pl-6 pr-6 pt-2 pb-2 border-2 border-black rounded-full cursor-pointer">
-                    Login
-                </div>
+               
+                    <a href="/login" className="text-xl pl-6 pr-6 pt-2 pb-2 border-2 border-black rounded-full cursor-pointer">
+                        Login
+                    </a>
+              
                 <div >
 
                     {/* <img  src={CartIcon} alt="icon" className="w-8 h-8" />
@@ -122,7 +128,7 @@ function NavBar() {
 
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
 

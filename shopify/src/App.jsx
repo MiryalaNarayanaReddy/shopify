@@ -1,30 +1,62 @@
 
 import './App.css'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { useEffect, useState } from 'react'
 
 import SignUp from './pages/auth/signup'
+import Login from './pages/auth/login'
+import AdminLogin from './pages/auth/admin/login'
+import AdminSignUp from './pages/auth/admin/signup'
+
 import NavBar from './components/NavBar'
 import Home from './pages/home/home'
+import CollectionPage from './pages/collections/collection'
+import { Footer } from './components/Banners'
 
 
 function App() {
+  const [selectedNavItem, setSelectedNavItem] = useState(''); // Shop, Men, Women, Kids
+
+  useEffect(() => {
+    const category = localStorage.getItem('category');
+
+    if (category === null) {
+      setSelectedNavItem('shop');
+    }
+    else {
+      setSelectedNavItem(category);
+    }
+  }
+    , []);
+
+  // get url params
+
   return (
     // <h1 className="text-3xl font-bold underline">
     //   Hello world!
     // </h1>
     <>
-    <NavBar />
+      <NavBar selectedNavItem={selectedNavItem} />
 
-    <BrowserRouter>
-      <Routes>
-        < Route path="/" element={<Home />} />
-        {/* <Route path="/" element={<Home />} /> */}
-        {/* <Route path="/about" element={<About />} /> */}
-        <Route path="/signup" element={<SignUp />} />
-      </Routes>
-    </BrowserRouter>
+      <BrowserRouter>
+        <Routes>
+          < Route path="/" element={<Home />} />
+          <Route path="/collections/:category" element={<CollectionPage />} />
+
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/admin/signup" element={<AdminSignUp />} />
+          <Route path="/admin/login" element={<AdminLogin />} />
+
+        </Routes>
+      </BrowserRouter>
+      <div className="w-full mt-16">
+        <Footer />
+      </div>
+
     </>
   )
 }
 
 export default App;
+
