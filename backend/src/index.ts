@@ -17,8 +17,28 @@ mongoose.connect('mongodb://localhost:27017/shopify').then(() => {
 const app = express();
 app.use(express.json());
 
-app.use(cors());
+// app.use(cors());
+const allowedOrigins = ['http://localhost:5173'];
 
+const corsOptions = {
+    // @ts-ignore
+    origin: function (origin, callback) {
+        if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true // if you want to allow cookies or authentication headers
+};
+
+app.use(cors(corsOptions));
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', 'http://localhost:5173');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    next();
+});
 const port = 4000;
 
 app.use('/api/v1', mainRoutes);

@@ -75,12 +75,19 @@ function NavBar({ selectedNavItem }) {
                 <div className="text-2xl font-bold" >
                     SHOPIFY
                 </div>
-
             </div>
 
             {/* items */}
 
-            <div className="grid grid-cols-4 gap-4">
+            <div className="grid grid-cols-5 gap-4">
+
+                {
+                    localStorage.getItem('admin') ? (
+                        <div className="col-span-1">
+                            <NavItem title="Dashboard" link="/admin/dashboard" selected={selectedNavItem === 'dashboard'} onclick={(e) => navclick(e, 'dashboard')} />
+                        </div>
+                    ) : <></>
+                }
                 <div className="col-span-1">
                     <NavItem title="Shop" link="/" selected={selectedNavItem === 'shop'} onclick={(e) => navclick(e, 'shop')} />
                 </div>
@@ -88,21 +95,31 @@ function NavBar({ selectedNavItem }) {
                     <NavItem title="Men" link="/collections/men" selected={selectedNavItem === 'men'} onclick={(e) => navclick(e, 'men')} />
                 </div>
                 <div className="col-span-1">
-                    <NavItem title="Women" link="#" selected={selectedNavItem === "omen"} onclick={(e) => navclick(e, 'women')} />
+                    <NavItem title="Women" link="/collections/women" selected={selectedNavItem === "omen"} onclick={(e) => navclick(e, 'women')} />
                 </div>
                 <div className="col-span-1">
-                    <NavItem title="Kids" link="#" selected={selectedNavItem === "kids"} onclick={(e) => navclick(e, 'kids')} />
+                    <NavItem title="Kids" link="/collections/kids" selected={selectedNavItem === "kids"} onclick={(e) => navclick(e, 'kids')} />
                 </div>
             </div>
 
 
             {/*  login */}
             <div className="flex flex-row items-center gap-4">
+
+                {
+                    localStorage.getItem('token') ? (
+                        <a href="/logout" className="text-xl pl-6 pr-6 pt-2 pb-2 border-2 border-black rounded-full cursor-pointer " onClick={() => { localStorage.clear(); window.location.href = '/';}} >
+                            Logout
+                        </a>
+                    ) : (
+                        <a href="/login" className="text-xl pl-6 pr-6 pt-2 pb-2 border-2 border-black rounded-full cursor-pointer">
+                            Login
+                        </a>
+                    )
+
+                }
                
-                    <a href="/login" className="text-xl pl-6 pr-6 pt-2 pb-2 border-2 border-black rounded-full cursor-pointer">
-                        Login
-                    </a>
-              
+                   
                 <div >
 
                     {/* <img  src={CartIcon} alt="icon" className="w-8 h-8" />

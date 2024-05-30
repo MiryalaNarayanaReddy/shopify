@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { base_url } from '../../../helper';
 
 
 function AdminSignUp() {
@@ -12,7 +13,7 @@ function AdminSignUp() {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        axios.post ('http://localhost:5000/auth/admin/signup', {
+        axios.post (base_url + '/auth/admin/signup', {
             name: name,
             email: email,
             password: password
@@ -20,11 +21,13 @@ function AdminSignUp() {
         .then((res) => {
             // console.log(res);
             if(res.status === 200){
+                alert('Sign Up Successful');
                 window.location.href = '/admin/login';
             }
 
         })
         .catch((err) => {
+            alert('Sign Up Failed');
             console.log(err);
         });
     }

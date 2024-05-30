@@ -18,7 +18,11 @@ export const addProduct = async (req: Request, res: Response) => {
     // get uploaded filename
     // @ts-ignore
 
-    // const image_id = req.file.filename;
+    const image_ids: string[] = req.files.map((file: any) => file.filename);
+
+
+
+
 
     // console.log(req)
 
@@ -35,6 +39,7 @@ export const addProduct = async (req: Request, res: Response) => {
             {
                 // @ts-ignore
                 admin_id: req.user.id,
+                image_ids: image_ids,
                 ...product
             }
         );
@@ -85,3 +90,15 @@ export const getProduct = async (req: Request, res: Response) => {
 
 }
 
+
+export const getAllProducts = async (req: Request, res: Response) => {
+    try {
+        const products = await Product.find();
+        res.status(200).json(products);
+    }
+
+    catch (err: any) {
+        res.status(400).json({ message: err.message });
+    }
+
+}

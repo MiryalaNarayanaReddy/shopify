@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { base_url } from '../../../helper';
 
 
 function AdminLogin() {
@@ -10,17 +11,23 @@ function AdminLogin() {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        axios.post ('http://localhost:5000/auth/admin/login', {
+        axios.post (base_url + '/auth/admin/login', {
             email: email,
             password: password
         })
         .then((res) => {
             if(res.status === 200){
+
+                localStorage.setItem('token', res.data.token);
+                localStorage.setItem('admin', JSON.stringify(res.data.user));
+
+                alert(res.data.message)
+
                 window.location.href = '/admin/dashboard';
             }
-
         })
         .catch((err) => {
+            alert('Login Failed');
             console.log(err);
         });
     }

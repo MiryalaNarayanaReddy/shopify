@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import axios from 'axios';
-
+import { base_url } from '../../helper';
 
 function Login(){
 
@@ -11,17 +11,26 @@ function Login(){
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        axios.post ('http://localhost:5000/auth/login', {
+        axios.post (base_url + '/auth/user/login', {
             email: email,
             password: password
         })
         .then((res) => {
             if(res.status === 200){
+
+               
+                localStorage.setItem('token', res.data.token);
+                localStorage.setItem('user', JSON.stringify(res.data.user));
+
+                alert(res.data.message)
+
+
                 window.location.href = '/';
             }
 
         })
         .catch((err) => {
+            alert('Login Failed')
             console.log(err);
         });
     }

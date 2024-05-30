@@ -1,5 +1,5 @@
 import express from 'express'
-import { getProductsByCategory, addProduct, updateProduct, deleteProduct,getProduct } from '../controllers/product';
+import { getProductsByCategory, addProduct, updateProduct, deleteProduct,getProduct,getAllProducts } from '../controllers/product';
 
 import multer from 'multer';
 
@@ -30,5 +30,7 @@ productRoutes.post('/add', upload.array('productImages', 12), addProduct);
 productRoutes.put('/:productId', updateProduct);
 productRoutes.delete('/:productId', deleteProduct);
 productRoutes.get('/product/:productId', getProduct);
+
+productRoutes.get('/all',getAllProducts);
 
 export { productRoutes };

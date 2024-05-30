@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-
+import { base_url } from '../../helper';
 
 function SignUp() {
 
@@ -12,7 +12,7 @@ function SignUp() {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        axios.post ('http://localhost:5000/auth/signup', {
+        axios.post (base_url + '/auth/user/signup', {
             name: name,
             email: email,
             password: password
@@ -20,6 +20,10 @@ function SignUp() {
         .then((res) => {
             // console.log(res);
             if(res.status === 200){
+
+                alert('Sign Up Successful');
+
+
                 window.location.href = '/login';
             }
 
@@ -28,9 +32,6 @@ function SignUp() {
             console.log(err);
         });
     }
-
-
-
 
 
     return (
