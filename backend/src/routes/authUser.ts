@@ -1,14 +1,10 @@
 import express from 'express'
+import { login, signup } from '../controllers/auth';
 
 const authUserRoutes = express.Router();
 
-authUserRoutes.post('/login', (req, res) => {
-    res.send('User login');
-});
-
-authUserRoutes.post('/register', (req, res) => {
-    res.send('User register');
-});
+authUserRoutes.post('/login', login);
+authUserRoutes.post('/signup', signup);
 
 
 export { authUserRoutes };

@@ -12,3 +12,6 @@ const cartSchema = new mongoose.Schema({
     ],
     total_price: Number,
 }, { timestamps: true });
+
+export const Cart = mongoose.model('Cart', cartSchema);
+

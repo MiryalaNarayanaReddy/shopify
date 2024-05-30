@@ -1,17 +1,13 @@
-import expres from 'express'
+import express from 'express'
 
-const cartRoutes = expres.Router();
+import { getCartItems, addToCart, removeFromCart, updateCart, clearCart } from '../controllers/cart';
 
-cartRoutes.get('/', (req, res) => {
-    res.send('Cart');
-});
+const cartRoutes = express.Router();
 
-cartRoutes.post('/add', (req, res) => {
-    res.send('Add to cart');
-});
-
-cartRoutes.post('/remove', (req, res) => {
-    res.send('Remove from cart');
-});
+cartRoutes.get('/', getCartItems)
+cartRoutes.post('/add' ,addToCart)
+cartRoutes.post('/remove', removeFromCart)
+cartRoutes.put('/update', updateCart) 
+cartRoutes.delete('/clear', clearCart)
 
 export { cartRoutes };
