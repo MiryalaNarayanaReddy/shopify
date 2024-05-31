@@ -93,7 +93,7 @@ export const getProduct = async (req: Request, res: Response) => {
 
 export const getAllProducts = async (req: Request, res: Response) => {
 
-    console.log('get all products')
+    // console.log('get all products')
 
     try {
        

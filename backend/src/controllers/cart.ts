@@ -13,41 +13,45 @@ export const getCartItems = async (req: Request, res: Response) => {
     }
 }
 
-
 export const addToCart = async (req: Request, res: Response) => {
     //@ts-ignore
-    const user_id = req.user.id;
-    const { product_id, price_per_unit, quantity } = req.body;
+    const user_id = req.user.id; // Assuming `req.user` is populated correctly
+    const { product_name,product_id, price_per_unit, quantity } = req.body;
+
+    if (!user_id ||!product_name|| !product_id || !price_per_unit || !quantity) {
+        return res.status(400).json({ message: 'Invalid request data' });
+    }
+
     try {
-        const cart = await Cart.findOne({ user_id: user_id, status: 'incart' });
+        const cart = await Cart.findOne({ user_id, status: 'incart' });
+
         if (cart) {
             const product = cart.products.find((p: any) => p.product_id === product_id);
             if (product) {
                 product.quantity += quantity;
+                // @ts-ignore
+                cart.total_price += price_per_unit * quantity;
+            } else {
+                cart.products.push({product_name, product_id, price_per_unit, quantity });
+                // @ts-ignore
+                cart.total_price += price_per_unit * quantity;
             }
-            else {
-                cart.products.push({ product_id, price_per_unit, quantity });
-            }
-            cart.total_price = 0;
-            cart.total_price += price_per_unit * quantity;
             await cart.save();
-        }
-        else {
+        } else {
             const newCart = new Cart({
                 user_id,
                 status: 'incart',
-                products: [{ product_id, price_per_unit, quantity }],
-                total_price: price_per_unit * quantity
+                products: [{ product_name, product_id, price_per_unit, quantity }],
+                total_price: price_per_unit * quantity,
             });
             await newCart.save();
         }
+
         res.status(201).json({ message: 'Product added to cart successfully' });
-    }
-    catch (err: any) {
+    } catch (err: any) {
         res.status(400).json({ message: err.message });
     }
-}
-
+};
 
 export const removeFromCart = async (req: Request, res: Response) => {
     //@ts-ignore

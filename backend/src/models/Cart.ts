@@ -5,6 +5,7 @@ const cartSchema = new mongoose.Schema({
     status: String, // incart, ordered, delivered
     products: [
         {
+            product_name: String,
             product_id: String,
             price_per_unit: Number,
             quantity: Number,

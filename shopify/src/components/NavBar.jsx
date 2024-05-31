@@ -15,40 +15,14 @@ function NavItem({ title, link, selected, onclick }) {
 }
 
 
-function NavBar({ selectedNavItem }) {
+function NavBar({ selectedNavItem ,cart}) {
 
-    const [cartItems, setCartItems] = useState(null);
+    // const [cartItems, setCartItems] = useState(null);
 
+
+// 
 
     // console.log(selectedNavItem);
-
-    useEffect(() => {
-
-        setCartItems(
-            {
-                products: [
-                    {
-                        id: 1,
-                        name: 'Product 1',
-                        price: 100,
-                        quantity: 1
-                    },
-                    {
-                        id: 2,
-                        name: 'Product 2',
-                        price: 200,
-                        quantity: 1
-                    },
-                    {
-                        id: 3,
-                        name: 'Product 3',
-                        price: 300,
-                        quantity: 1
-                    },
-                ]
-            }
-        )
-    }, []);
 
 
     const navclick = (e, title) => {
@@ -127,14 +101,13 @@ function NavBar({ selectedNavItem }) {
                             0
                         </div> */}
 
-                    <div className="relative w-8 h-8 cursor-pointer">
+                    <div className="relative w-8 h-8 cursor-pointer" onClick={() => window.location.href = '/cart'}>
                         {
 
-                            cartItems && cartItems.products.length > 0 &&
-
+                           cart && cart.length >= 0 &&
 
                             <div className="absolute bg-red-500 text-white rounded-full w-4 h-4 flex justify-center items-center -top-1 -right-1">
-                                {cartItems.products.length}
+                               {cart.length}
                             </div>
                         }
                         <img src={CartIcon} alt="icon" className="w-8 h-8 bottom-0 left-0" />
