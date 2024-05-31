@@ -13,12 +13,15 @@ import banner_image_men from "../../assets/banner images/banner_mens.png"
 import banner_image_women from "../../assets/banner images/banner_women.png"
 import banner_image_kids from "../../assets/banner images/banner_kids.png"
 
+import ProductPage from "./producPage";
 
 function CollectionPage() {
 
     const [products, setProducts] = useState([]);
     const [banner_image, setBannerImage] = useState('');
     const [loading, setLoading] = useState(true);
+
+    const [selectedProduct, setSelectedProduct] = useState(null);
 
     // get all products from the category
 
@@ -61,24 +64,43 @@ function CollectionPage() {
 
     }, []);
 
+    useEffect(() => {
+        console.log(products);
+    }, [selectedProduct]);
+
+
+    const handleSelectProduct = (product) => {
+        setSelectedProduct(product);
+    }
+
+
     // display all products in the category 
 
     return (
 
-        <div className="grid grid-cols-1 justify-center items-center mt-16">
-            <Banner banner_image={banner_image} />
+        selectedProduct !== null ?
+            <ProductPage product={selectedProduct} />
 
-            <div className="grid grid-cols-4 gap-4">
-                {loading ? (
-                    <h1>Loading...</h1>
-                ) : (
-                    products.map((product) => (
-                        <ItemCard key={product.id} item={product} />
-                    ))
-                )}
-            </div>
+            :
+            (
+                <div className="grid grid-cols-1 justify-center items-center mt-16" >
+                    <Banner banner_image={banner_image} />
 
-        </div>
+                    <div className="grid grid-cols-4 gap-4">
+                        {loading ? (
+                            <h1>Loading...</h1>
+                        ) : (
+                            products.map((product) => (
+                                <ItemCard key={product.id} item={product} onClick={() => handleSelectProduct(product)} />
+                            ))
+                        )}
+                    </div>
+
+                </div>
+            )
+
+
+
     );
 }
 

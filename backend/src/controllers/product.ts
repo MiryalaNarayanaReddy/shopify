@@ -101,7 +101,7 @@ export const getAllProducts = async (req: Request, res: Response) => {
 
         const products = await Product.find();
 
-        console.log(products);
+        // console.log(products);
 
         res.status(200).json(products);
 

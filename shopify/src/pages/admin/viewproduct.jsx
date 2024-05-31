@@ -5,12 +5,15 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { base_url } from "../../helper";
 import { sample_data } from '../collections/sample_data'
+import ProductPage from '../collections/producPage'
 
 export default function ViewProduct() {
 
     const [products, setProducts] = useState([]);
 
     const [loading, setLoading] = useState(true);
+
+    const [selectedProduct, setSelectedProduct] = useState(null);
 
     useEffect(() => {
         //    axios.get(base_url + '/products/all',
@@ -38,6 +41,10 @@ export default function ViewProduct() {
         , []);
 
     return (
+
+        selectedProduct ? <ProductPage product={selectedProduct} /> 
+    : 
+
         <div className="col-span-6 xl:col-span-11 justify-center items-center flex flex-col">
             <h1 className="text-2xl font-bold">Dashboard</h1>
 
@@ -46,12 +53,10 @@ export default function ViewProduct() {
                     <h1>Loading...</h1>
                 ) : (
                     products.map((product) => (
-                        <ItemCard key={product.id} item={product} />
+                        <ItemCard key={product.id} item={product} onClick={() => setSelectedProduct(product)} />
                     ))
                 )}
             </div>
-
         </div>
-
     )
 }

@@ -10,7 +10,7 @@ function Home() {
             </div>
 
             <div className="w-full h-screen mt-16 ">
-                <PopularContent Category="WOMEN" />
+                {/* <PopularContent Category="WOMEN" /> */}
             </div>
 
             <div className="w-4/6 mt-16">
@@ -18,7 +18,7 @@ function Home() {
             </div>
 
             <div className="w-full mt-16">
-                <NewContent Category={"KIDS"} />
+                {/* <NewContent Category={"KIDS"} /> */}
             </div>
 
             <div className="w-4/6 mt-16 h-[30vh]">
