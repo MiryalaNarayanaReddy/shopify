@@ -92,9 +92,19 @@ export const getProduct = async (req: Request, res: Response) => {
 
 
 export const getAllProducts = async (req: Request, res: Response) => {
+
+    console.log('get all products')
+
     try {
+       
+        // const products = await Product.find(); // i am gettting an empty array here 
+
         const products = await Product.find();
+
+        console.log(products);
+
         res.status(200).json(products);
+
     }
 
     catch (err: any) {

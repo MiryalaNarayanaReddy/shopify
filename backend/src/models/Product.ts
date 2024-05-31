@@ -8,6 +8,6 @@ const productSchema = new mongoose.Schema({
     image_ids: [String],
     old_price: Number,
     new_price: Number,
-}, { timestamps: true });
+},  { collection : 'Product' , timestamps: true });
 
 export const Product = mongoose.model('Product', productSchema);

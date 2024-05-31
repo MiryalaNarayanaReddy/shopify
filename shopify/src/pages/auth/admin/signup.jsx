@@ -14,6 +14,7 @@ function AdminSignUp() {
         e.preventDefault();
 
         axios.post (base_url + '/auth/admin/signup', {
+            role: 'admin',
             name: name,
             email: email,
             password: password

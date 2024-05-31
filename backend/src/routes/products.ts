@@ -21,7 +21,7 @@ const productRoutes = express.Router();
 
 // check if the user is authenticated
 
-productRoutes.get('/:category', getProductsByCategory);
+productRoutes.get('/category/:category', getProductsByCategory);
 
 upload.array('productImages', 12)
 // productRoutes.post('/add', upload.single('productImage'), addProduct);

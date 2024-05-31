@@ -13,6 +13,7 @@ function SignUp() {
         e.preventDefault();
 
         axios.post (base_url + '/auth/user/signup', {
+            role: 'user',
             name: name,
             email: email,
             password: password
