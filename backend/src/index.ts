@@ -8,7 +8,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const db_url: string = process.env.MONGODB_URL || 'mongodb://localhost:27017/shopify';
-// mongoose.connect('mongodb://localhost:27017/shopify').then(() => {
+
 mongoose.connect(db_url).then(() => {
     console.log('Connected to MongoDB');
 }).catch((err) => {

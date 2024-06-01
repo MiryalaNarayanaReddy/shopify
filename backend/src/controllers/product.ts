@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 import { Product } from "../models/Product";
+import fs from 'fs';
+import path from 'path';
 
 
 export const getProductsByCategory = async (req: Request, res: Response) => {
@@ -18,16 +20,17 @@ export const addProduct = async (req: Request, res: Response) => {
     // get uploaded filename
     // @ts-ignore
 
-    const image_ids: string[] = req.files.map((file: any) => file.filename);
+    // const files_names : string[] = req.files.map((file: any) => file.filename);
 
+    // get file path
 
-
-
+    // @ts-ignore
+    // console.log(req.files);
 
     // console.log(req)
 
     // @ts-ignore
-    if(req.user.role !== 'admin') {
+    if (req.user.role !== 'admin') {
         return res.status(403).json({ message: 'You are not authorized to perform this action' });
     }
 
@@ -35,15 +38,37 @@ export const addProduct = async (req: Request, res: Response) => {
     const product = req.body;
 
     try {
+
+        // @ts-ignore
+        // read files save them to the database 
+
+        // @ts-ignore
+        const images = req.files.map((file: any) => {
+            const imageBuffer = fs.readFileSync(file.path);
+            const base64Image = imageBuffer.toString('base64');
+            return {
+                data: base64Image,
+                contentType: file.mimetype
+            };
+        });
+
         const newProduct = new Product(
             {
                 // @ts-ignore
                 admin_id: req.user.id,
-                image_ids: image_ids,
+                images: images,
                 ...product
             }
         );
         await newProduct.save();
+
+        // delete the files after saving them to the database
+
+        // @ts-ignore
+        req.files.forEach((file: any) => {
+            fs.unlinkSync(file.path);
+        });
+
         res.status(201).json(newProduct);
     } catch (err: any) {
         res.status(400).json({ message: err.message });
@@ -96,7 +121,7 @@ export const getAllProducts = async (req: Request, res: Response) => {
     // console.log('get all products')
 
     try {
-       
+
         // const products = await Product.find(); // i am gettting an empty array here 
 
         const products = await Product.find();

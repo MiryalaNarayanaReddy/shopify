@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import axios from 'axios'
 import { base_image_url, base_url } from '../../helper'
 
@@ -27,23 +27,33 @@ function ProductPage({ product }) {
         })
     }
 
-    const [selectedImage, setSelectedImage] = React.useState(0)
+    const [selectedImage, setSelectedImage] = React.useState(0);
+
+
+    useEffect(() => {
+        console.log(selectedImage) // this will print the index of the selected image
+    }, [selectedImage]);
 
     return (
         <div className="grid grid-cols-12 justify-center items-center mt-16 bg-white rounded-lg p-4 m-4  shadow-lg h-[90vh] ">
 
             <div className='cols-span-4 grid-cols-1  overflow-y-auto h-[70vh]'>
                 {
-                    product.image_ids.map((image_id) => {
-                        return <img src={base_image_url + '/' + image_id} alt={product.name}
-                            className={`col-span-1 p-4 border-2 border-gray-200  ${product.image_ids.indexOf(image_id) === selectedImage ? 'border-blue-500' : ''} `}
-                            onClick={() => { setSelectedImage(product.image_ids.indexOf(image_id)) }} />
+                    product.images.map((image, indx) => { // indx is the index of the image
+                        return <img src={`data:${image.contentType};base64,${image.data}`} alt={product.name}
+                            // className={`col-span-1 p-4 border-2 border-gray-200  ${product.image_ids.indexOf(image_id) === selectedImage ? 'border-blue-500' : ''} `}
+                            className={`col-span-1 p-4 border-2 border-gray-200 ${indx === selectedImage ? 'border-red-500' : ''}`}
+                            onClick={() => { setSelectedImage(indx) }} />
                     })
                 }
             </div>
             {/* height n times 20 */}
             <div className='col-span-4 grid-cols-1 justify-center items-center bg-white rounded-lg p-4 m-4 shadow-lg justify-self-center'>
-                <img src={base_image_url + '/' + product.image_ids[selectedImage]} alt={product.name} className='col-span-1  p-4 border-2 border-gray-200 w-[70vh]' />
+                {/* <img src={base_image_url + '/' + product.image_ids[selectedImage]} alt={product.name} className='col-span-1  p-4 border-2 border-gray-200 w-[70vh]' /> */}
+
+                {/* <img src={`data:image/png;base64,${product.img.data}`} /> */}
+                <img src={`data:${product.images[selectedImage].contentType};base64,${product.images[selectedImage].data}`} alt={product.name} className='col-span-1  p-4 border-2 border-gray-200 w-[70vh]' />
+
 
             </div>
 
@@ -72,7 +82,7 @@ function ProductPage({ product }) {
                             <button className='bg-blue-500 text-white rounded-lg p-2 m-2'>
                                 Buy Now
                             </button>
-                            </div>
+                        </div>
 
                     </div>
                     <div className='col-span-1 p-2 m-2'>
@@ -95,7 +105,7 @@ function ProductPage({ product }) {
 
                 <div className='col-span-1 p-2 m-2'>
                     <p className='text-xl font-bold'>Quantity:</p>
-                    <input type='number' value={quantity} onChange={(e) => setQuantity(e.target.value)}  className='border-2 border-gray-200 p-2 m-2 w-20' />
+                    <input type='number' value={quantity} onChange={(e) => setQuantity(e.target.value)} className='border-2 border-gray-200 p-2 m-2 w-20' />
                 </div>
 
                 <button className='col-span-1 bg-blue-500 text-white rounded-lg p-2 m-2' onClick={addTocart}>
