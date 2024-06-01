@@ -7,12 +7,10 @@ on:
     branches: [ "master" ]
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v4
     - name: Build the Docker image
-      run: docker build ./backend --file Dockerfile --tag narayanareddy123/shopify_backend:$(date +%s)
+      run: docker build backend --file backend/Dockerfile --tag narayanareddy123/shopify_backend:$(date +%s)
