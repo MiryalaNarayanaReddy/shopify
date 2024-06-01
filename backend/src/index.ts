@@ -5,9 +5,11 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 
 
-dotenv.config();    
+dotenv.config();
 
-mongoose.connect('mongodb://localhost:27017/shopify').then(() => {
+const db_url: string = process.env.MONGODB_URL || 'mongodb://localhost:27017/shopify';
+// mongoose.connect('mongodb://localhost:27017/shopify').then(() => {
+mongoose.connect(db_url).then(() => {
     console.log('Connected to MongoDB');
 }).catch((err) => {
     console.log('Error connecting to MongoDB', err);
@@ -41,7 +43,7 @@ app.use(cors());
 //     next();
 // });
 
-const port = 4000;
+const port =  process.env.PORT || 4000;
 
 app.use('/api/v1', mainRoutes);
 
