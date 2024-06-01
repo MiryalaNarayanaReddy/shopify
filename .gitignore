@@ -1,6 +1,6 @@
 screenshots-ui
 node_modules
-assets
+# assets
 dist
 uploads
 .env
