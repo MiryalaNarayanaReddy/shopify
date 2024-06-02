@@ -89,6 +89,17 @@ function MyOrders() {
 
     return (
 
+        
+            orders.length === 0 ? <>
+            
+            <div className="flex flex-col items-center mt-16 bg-gray-100 p-8 min-h-screen">
+                <h1 className="text-2xl font-bold text-gray-800">No Orders</h1>
+            </div>
+
+            </ >
+            :
+
+
         <div className="flex flex-col items-center mt-8 bg-gray-100 p-8 min-h-screen">
             {orders.map((order, indx) => (
                 <div key={indx} className="w-full max-w-4xl bg-white rounded-lg p-6 m-4 shadow-lg">

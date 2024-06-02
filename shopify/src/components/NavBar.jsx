@@ -151,21 +151,24 @@ function NavBar({ selectedNavItem, cart }) {
                                     :
                                     <></>
 
-
                         }
 
                     </div>
 
                     {/* my orders */}
 
-                    <div className="pl-2 relative">
-                        <div className='flex flex-row items-center ' onClick={() => window.location.href = '/myorders'}>
+                    {
+                        localStorage.getItem('token') ? (
+                            <div className="pl-2 relative">
+                                <div className='flex flex-row items-center ' onClick={() => window.location.href = '/myorders'}>
 
-                            <div className="text-xl pl-6 pr-6 pt-2 pb-2 cursor-pointer bg-purple-500 text-white rounded-full">
-                                My Orders
+                                    <div className="text-xl pl-6 pr-6 pt-2 pb-2 cursor-pointer bg-purple-500 text-white rounded-full">
+                                        My Orders
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
+                        ) : <></>
+                    }
 
 
 
