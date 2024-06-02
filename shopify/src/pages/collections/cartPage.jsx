@@ -6,17 +6,27 @@ import { parse } from "postcss";
 
 
 
-function CartItem({ cartItem }) {
+function CartItem({ cartItem, setCart, cart }) {
 
-    const deleteFromCart = () => {
-        axios.delete(`${base_url}/cart/delete/${cartItem._id}`, {
-            headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('token')
-            }
+    const deleteFromCart = ({ product_id }) => {
+        axios.post(`${base_url}/cart/remove`, {
+
+            product_id
+
+        }, {
+            headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
         })
             .then((res) => {
-                console.log(res.data);
+
+                if (res.status === 200) {
+                    
+                    window.location.reload();
+                }
+                else {
+                    alert('Failed to delete item from cart');
+                }
             })
+
             .catch((err) => {
                 console.log(err);
             })
@@ -25,19 +35,33 @@ function CartItem({ cartItem }) {
     return (
 
         <tr>
-            <td className=" p-2 text-xl font-bold">{cartItem.product_name}</td>
+            <td >
+
+                <img src={`data:${cartItem.contentType};base64,${cartItem.image}`} alt={cartItem.product_name} className=' h-20 p-2' />
+            </td>
+
+            <td className=" p-2 text-xl font-bold flex flex-row items-center justify-center">
+
+                {/* <div className="flex flex-row items-center"> */}
+
+                {/* <img src={`data:${product.images[selectedImage].contentType};base64,${product.images[selectedImage].data}`} alt={product.name} className='col-span-1  p-4 border-2 border-gray-200 w-[70vh]' /> */}
+
+                {/* </div> */}
+                <div className="text-lg font-bold ">{cartItem.product_name}</div>
+
+            </td>
             <td className=" p-2 text-red-500 font-bold">${cartItem.price_per_unit}</td>
             <td className=" p-2 text-lg">{cartItem.quantity}</td>
             <td className=" p-2 text-lg"> ${cartItem.price_per_unit * cartItem.quantity}</td>
-            <td className=" p-2 text-lg cursor-pointer" onClick={deleteFromCart}>Delete</td>
+            <td className=" p-2 text-lg cursor-pointer" onClick={() => { deleteFromCart({ product_id: cartItem.product_id }) }}>Delete</td>
         </tr>
 
     )
 }
 
-function CartPage({ cart ,setCart}) {
+function CartPage({ cart, setCart }) {
 
-    
+
     const [total, setTotal] = useState(0);
     const [totalprice, setTotalPrice] = useState(0);
 
@@ -49,11 +73,19 @@ function CartPage({ cart ,setCart}) {
             }
         })
             .then((res) => {
-                console.log(res.data);
+                // console.log(res.data);
+
+                setCart({ products: [] });
+                localStorage.setItem('cart', JSON.stringify({ products: [] }));
+
+                alert('Cart Cleared');
+
+
             }
             )
             .catch((err) => {
                 console.log(err);
+                alert('Failed to clear cart');
             }
             )
     }
@@ -97,8 +129,8 @@ function CartPage({ cart ,setCart}) {
                         setTotalPrice(tp);
                     }
                 }
-                else{
-                    setCart({products: []});
+                else {
+                    setCart({ products: [] });
                 }
             })
             .catch((err) => {
@@ -109,7 +141,7 @@ function CartPage({ cart ,setCart}) {
 
     return (
 
-       cart.products.length === 0 ? (
+        cart.products.length === 0 ? (
             <div className="grid grid-cols-1 justify-center items-center mt-16 bg-white rounded-lg p-4 m-4  shadow-lg h-[50vh] ">
 
                 <div className="text-2xl font-bold  text-center">Cart is Empty</div>
@@ -127,35 +159,45 @@ function CartPage({ cart ,setCart}) {
                     <div className="text-xl font-bold">Action</div>
                 </div> */}
 
+                <table className="table-auto ">
 
-                <tb className="justify-self-center">
-                    <tr >
-                        <th className="text-xl p-2 font-bold">Product</th>
-                        <th className="text-xl p-2 font-bold">Price</th>
-                        <th className="text-xl p-2 font-bold">Quantity</th>
-                        <th className="text-xl p-2 font-bold">Total</th>
-                        <th className="text-xl p-2 font-bold">Action</th>
-                    </tr>
+                    <thead>
+                        <tr >
+                            <th className="text-xl p-2 font-bold">Image</th>
+                            <th className="text-xl p-2 font-bold">Product</th>
+                            <th className="text-xl p-2 font-bold">Price</th>
+                            <th className="text-xl p-2 font-bold">Quantity</th>
+                            <th className="text-xl p-2 font-bold">Total</th>
+                            <th className="text-xl p-2 font-bold">Action</th>
+                        </tr>
+                    </thead>
 
-                    {
-                        // array of cart items
-                        cart.products.map((cartItem) => {
-                            return <CartItem cartItem={cartItem} />
-                        })
-                    }
+                    <tbody className="text-lg">
 
 
-                    {/*  total */}
+                        {
+                            // array of cart items
+                            cart.products.map((cartItem) => {
+                                return <CartItem cartItem={cartItem} setCart={setCart} cart={cart} />
+                            })
+                        }
 
-                    <tr>
-                        <td className=" p-2 text-xl font-bold">Total</td>
-                        <td className=" p-2 text-red-500 font-bold"> </td>
-                        <td className=" p-2 text-lg"> {total}</td>
-                        <td className=" p-2 text-lg"> $ {totalprice}</td>
-                        <td className=" p-2 text-lg"> <button className="bg-red-500 text-white p-2 rounded-lg" onClick={removeCart}>Clear Cart</button></td>
-                    </tr>
 
-                </tb>
+                        {/*  total */}
+
+                        <tr>
+                            <td className=" p-2 text-xl font-bold"></td>
+                            <td className=" p-2 text-xl font-bold">Total</td>
+
+                            <td className=" p-2 text-red-500 font-bold"> </td>
+                            <td className=" p-2 text-lg"> {total}</td>
+                            <td className=" p-2 text-lg"> $ {totalprice}</td>
+                            <td className=" p-2 text-lg"> <button className="bg-red-500 text-white p-2 rounded-lg" onClick={removeCart}>Clear Cart</button></td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
 
                 {/* buy button */}
                 <div className="flex flex-row justify-center items-center mt-4">

@@ -91,12 +91,7 @@ function ProductPage({ product ,cart,setCart }) {
                             {Math.floor(((product.old_price - product.new_price) / product.old_price) * 100)}% off
                         </div>
 
-                        <div className='text-2xl font-bold text-green-500 '>
-                            {/* buy now buttom */}
-                            <button className='bg-blue-500 text-white rounded-lg p-2 m-2'>
-                                Buy Now
-                            </button>
-                        </div>
+                       
 
                     </div>
                     <div className='col-span-1 p-2 m-2'>

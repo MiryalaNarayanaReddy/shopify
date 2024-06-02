@@ -1,11 +1,52 @@
 import { Cart } from "../models/Cart";
 import { Request, Response } from 'express';
+import { Product } from '../models/Product';
 
 export const getCartItems = async (req: Request, res: Response) => {
     //@ts-ignore
     const user_id = req.user.id;
     try {
-        const cart = await Cart.findOne({ user_id: user_id, status: 'incart' });
+        let cart = await Cart.findOne({ user_id: user_id, status: 'incart' });
+
+        // for each product in the cart, get the product details from the products collection
+
+        if (cart) {
+
+            // @ts-ignore
+            const products = cart.products.map(async (p: any) => {
+
+                const product = await Product
+                    .findById(p.product_id)
+                    .select(' images category')
+
+                    // console.log(product);
+                    // @ts-ignore
+                return {
+                    
+                    // @ts-ignore
+                    image: product.images[0].data,
+                    // @ts-ignore
+                    image_type: product.images[0].contentType,
+                    product_category: product?.category,
+                    quantity: p.quantity,
+                    price_per_unit: p.price_per_unit,
+                    product_id: p.product_id,
+                    product_name: p.product_name,
+                    
+                };
+
+
+            })
+            const productsData = await Promise.all(products);
+
+            const newcart = {
+                products: productsData,
+                total_price: cart.total_price
+            }
+
+            return res.status(200).json(newcart);
+        }
+
 
         if (!cart) {
             return res.status(200).json(
@@ -14,10 +55,6 @@ export const getCartItems = async (req: Request, res: Response) => {
                 }
             
             );
-        }else{
-
-        
-        return res.status(200).json(cart);
         }
     }
     catch (err: any) {
@@ -73,6 +110,8 @@ export const removeFromCart = async (req: Request, res: Response) => {
     //@ts-ignore
     const user_id = req.user.id;
     const { product_id } = req.body;
+
+    // console.log(req.body);
     try {
         const cart = await Cart.findOne({ user_id: user_id, status: 'incart' });
         if (cart) {
