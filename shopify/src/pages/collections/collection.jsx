@@ -15,7 +15,7 @@ import banner_image_kids from "../../assets/banner images/banner_kids.png"
 
 import ProductPage from "./producPage";
 
-function CollectionPage() {
+function CollectionPage({cart,setCart}) {
 
     const [products, setProducts] = useState([]);
     const [banner_image, setBannerImage] = useState('');
@@ -80,7 +80,7 @@ function CollectionPage() {
     return (
 
         selectedProduct !== null ?
-            <ProductPage product={selectedProduct} />
+            <ProductPage product={selectedProduct} cart={cart} setCart={setCart} />
 
             :
             (

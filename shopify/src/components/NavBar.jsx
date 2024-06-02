@@ -1,6 +1,8 @@
 import Logo from '../assets/icons/logo_big.png'
 import CartIcon from '../assets/icons/cart_icon.png'
 import { useEffect, useState } from 'react';
+import Avatar from './Avatar';
+import Profile from '../pages/auth/Profile';
 
 function NavItem({ title, link, selected, onclick }) {
     return (
@@ -15,12 +17,12 @@ function NavItem({ title, link, selected, onclick }) {
 }
 
 
-function NavBar({ selectedNavItem ,cart}) {
+function NavBar({ selectedNavItem, cart }) {
 
     // const [cartItems, setCartItems] = useState(null);
 
 
-// 
+    // 
 
     // console.log(selectedNavItem);
 
@@ -82,7 +84,7 @@ function NavBar({ selectedNavItem ,cart}) {
 
                 {
                     localStorage.getItem('token') ? (
-                        <a href="/logout" className="text-xl pl-6 pr-6 pt-2 pb-2 border-2 border-black rounded-full cursor-pointer " onClick={() => { localStorage.clear(); window.location.href = '/';}} >
+                        <a href="/logout" className="text-xl pl-6 pr-6 pt-2 pb-2 border-2 border-black rounded-full cursor-pointer " onClick={() => { localStorage.clear(); window.location.href = '/'; }} >
                             Logout
                         </a>
                     ) : (
@@ -92,8 +94,8 @@ function NavBar({ selectedNavItem ,cart}) {
                     )
 
                 }
-               
-                   
+
+
                 <div >
 
                     {/* <img  src={CartIcon} alt="icon" className="w-8 h-8" />
@@ -104,19 +106,48 @@ function NavBar({ selectedNavItem ,cart}) {
                     <div className="relative w-8 h-8 cursor-pointer" onClick={() => window.location.href = '/cart'}>
                         {
 
-                           cart && cart.length >= 0 &&
+                            cart &&
 
                             <div className="absolute bg-red-500 text-white rounded-full w-4 h-4 flex justify-center items-center -top-1 -right-1">
-                               {cart.length}
+                                {/* length of cart products */}
+
+                                {cart.products.length} 
+                               
                             </div>
                         }
                         <img src={CartIcon} alt="icon" className="w-8 h-8 bottom-0 left-0" />
 
                     </div>
 
-
-
                 </div>
+
+                <div className="flex flex-row items-center gap-2">
+                        
+                        <div className="text-xl">
+
+                            {
+                                localStorage.getItem('user') ? 
+                                    <a href="/profile" className="text-xl pl-6 pr-6 pt-2 pb-2  cursor-pointer">
+                                        <Avatar name={JSON.parse(localStorage.getItem('user')).name} />
+                                    </a>
+                                 : 
+
+                                    localStorage.getItem('admin')? 
+                                        <a href="/profile" className="text-xl pl-6 pr-6 pt-2 pb-2 cursor-pointer">
+                                            <Avatar name="Admin" />
+                                        </a>
+                                    : 
+                                       <></>
+                                    
+                                
+                            }
+                            
+                        </div>
+
+
+
+
+                    </div>
             </div>
         </div >
     )

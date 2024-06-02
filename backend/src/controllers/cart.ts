@@ -6,7 +6,19 @@ export const getCartItems = async (req: Request, res: Response) => {
     const user_id = req.user.id;
     try {
         const cart = await Cart.findOne({ user_id: user_id, status: 'incart' });
-        res.status(200).json(cart);
+
+        if (!cart) {
+            return res.status(200).json(
+                {
+                    products: [],
+                }
+            
+            );
+        }else{
+
+        
+        return res.status(200).json(cart);
+        }
     }
     catch (err: any) {
         res.status(400).json({ message: err.message });
@@ -16,9 +28,9 @@ export const getCartItems = async (req: Request, res: Response) => {
 export const addToCart = async (req: Request, res: Response) => {
     //@ts-ignore
     const user_id = req.user.id; // Assuming `req.user` is populated correctly
-    const { product_name,product_id, price_per_unit, quantity } = req.body;
+    const { product_name, product_id, price_per_unit, quantity } = req.body;
 
-    if (!user_id ||!product_name|| !product_id || !price_per_unit || !quantity) {
+    if (!user_id || !product_name || !product_id || !price_per_unit || !quantity) {
         return res.status(400).json({ message: 'Invalid request data' });
     }
 
@@ -32,11 +44,14 @@ export const addToCart = async (req: Request, res: Response) => {
                 // @ts-ignore
                 cart.total_price += price_per_unit * quantity;
             } else {
-                cart.products.push({product_name, product_id, price_per_unit, quantity });
+                cart.products.push({ product_name, product_id, price_per_unit, quantity });
                 // @ts-ignore
                 cart.total_price += price_per_unit * quantity;
             }
             await cart.save();
+
+            return res.status(201).json(cart);
+
         } else {
             const newCart = new Cart({
                 user_id,
@@ -45,9 +60,10 @@ export const addToCart = async (req: Request, res: Response) => {
                 total_price: price_per_unit * quantity,
             });
             await newCart.save();
+            return res.status(201).json(newCart);
         }
 
-        res.status(201).json({ message: 'Product added to cart successfully' });
+        // res.status(201).json({ message: 'Product added to cart successfully' });
     } catch (err: any) {
         res.status(400).json({ message: err.message });
     }

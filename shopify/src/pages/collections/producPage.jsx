@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import axios from 'axios'
 import { base_image_url, base_url } from '../../helper'
 
-function ProductPage({ product }) {
+function ProductPage({ product ,cart,setCart }) {
 
     // React.useEffect(() => {
     //     axios.get('https://fakestoreapi.com/products')
@@ -24,7 +24,22 @@ function ProductPage({ product }) {
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
             }
-        })
+        }).then
+            ((res) => {
+                if(res.status === 201){
+                 
+                    setCart(res.data)
+                    localStorage.setItem('cart', JSON.stringify(res.data))
+
+                    alert('Added to cart');
+                }
+                else{
+                    alert('Failed to add to cart');
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     }
 
     const [selectedImage, setSelectedImage] = React.useState(0);
@@ -53,7 +68,6 @@ function ProductPage({ product }) {
 
                 {/* <img src={`data:image/png;base64,${product.img.data}`} /> */}
                 <img src={`data:${product.images[selectedImage].contentType};base64,${product.images[selectedImage].data}`} alt={product.name} className='col-span-1  p-4 border-2 border-gray-200 w-[70vh]' />
-
 
             </div>
 
