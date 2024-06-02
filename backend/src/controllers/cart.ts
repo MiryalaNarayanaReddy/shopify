@@ -135,37 +135,6 @@ export const removeFromCart = async (req: Request, res: Response) => {
 }
 
 
-export const updateCart = async (req: Request, res: Response) => {
-    //@ts-ignore
-    const user_id = req.user.id;
-    const { product_id, quantity } = req.body;
-    try {
-        const cart = await Cart.findOne({ user_id: user_id, status: 'incart' });
-        if (cart) {
-            const product = cart.products.find((p: any) => p.product_id === product_id);
-            if (product) {
-                product.quantity = quantity;
-                cart.total_price = 0;
-                cart.products.forEach((p: any) => {
-                    // @ts-ignore
-                    cart.total_price += p.price_per_unit * p.quantity;
-                });
-                await cart.save();
-                res.status(200).json({ message: 'Cart updated successfully' });
-            }
-            else {
-                res.status(404).json({ message: 'Product not found in cart' });
-            }
-        }
-        else {
-            res.status(404).json({ message: 'Cart not found' });
-        }
-    }
-    catch (err: any) {
-        res.status(400).json({ message: err.message });
-    }
-}
-
 
 export const clearCart = async (req: Request, res: Response) => {
     //@ts-ignore
@@ -179,3 +148,106 @@ export const clearCart = async (req: Request, res: Response) => {
     }
 }
 
+export const placeOrder = async (req: Request, res: Response) => {
+    //@ts-ignore
+    const user_id = req.user.id;
+    try {
+        const cart = await Cart.findOne({ user_id: user_id, status: 'incart' });
+        if (cart) {
+            cart.status = 'ordered';
+            await cart.save();
+            res.status(200).json({ message: 'Order placed successfully' });
+        }
+        else {
+            res.status(404).json({ message: 'Cart not found' });
+        }
+    }
+    catch (err: any) {
+        res.status(400).json({ message: err.message });
+    }
+}
+
+
+export const getOrders = async (req: Request, res: Response) => {
+    //@ts-ignore
+    const user_id = req.user.id;
+    try {
+        const orders = await Cart.find({ user_id: user_id}).sort({ createdAt: -1 }); // sort by createdAt in descending order
+        res.status(200).json(orders);
+    }
+    catch (err: any) {
+        res.status(400).json({ message: err.message });
+    }
+}
+
+
+export const updateCart = async (req: Request, res: Response) => {
+    //@ts-ignore
+    const user_id = req.user.id;
+
+    // @ts-ignore
+    if (req.user.role !== 'admin') {
+        return res.status(403).json({ message: 'You are not authorized to perform this action' });
+    }
+
+    const { cart_id,status } = req.body;
+
+    try {
+        const cart = await Cart.findOne({ _id: cart_id });
+        if (cart) {
+            cart.status = status;
+            await cart.save();
+            res.status(200).json({ message: 'Cart updated successfully' });
+        }
+        else {
+            res.status(404).json({ message: 'Cart not found' });
+        }
+    }
+    catch (err: any) {
+        res.status(400).json({ message: err.message });
+    }
+    
+}
+
+
+export const getallOrders = async (req: Request, res: Response) => {
+    //@ts-ignore
+    const user_id = req.user.id;
+
+    // @ts-ignore
+    if (req.user.role !== 'admin') {
+        return res.status(403).json({ message: 'You are not authorized to perform this action' });
+    }
+
+    try {
+        // status: 'ordered' or status:  'shipped'
+        // get only _id and status fields and latest orders first 
+        // const orders = await Cart.find({ status: { $in: ['ordered', 'shipped']}
+        // }).sort({ createdAt: -1 }); 
+        // res.status(200).json(orders);
+
+        //get id and status of all orders
+        const orders = await Cart.find({ status: { $in: ['ordered', 'shipped']}}).select('_id status').sort({ createdAt: -1 });
+        res.status(200).json(orders);
+    }
+    catch (err: any) {
+        res.status(400).json({ message: err.message });
+    }
+}
+
+
+export const getmyOrders = async (req: Request, res: Response) => {
+    //@ts-ignore
+    const user_id = req.user.id;
+
+    try {
+        const orders = await Cart.find(
+            { user_id: user_id, status: { $in: ['ordered', 'shipped','delivered']}})
+            .select('_id status createdAt').sort({ createdAt: -1 });
+
+        res.status(200).json(orders);
+    }
+    catch (err: any) {
+        res.status(400).json({ message: err.message });
+    }
+}

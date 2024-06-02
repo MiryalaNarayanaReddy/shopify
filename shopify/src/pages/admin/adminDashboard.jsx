@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 
 import AddProductPage from './addproduct';
 import ViewProduct from './viewproduct';
+import ViewAllOrders from './viewAllOrders';
 
 function AdminDashboard() {
 
@@ -31,11 +32,11 @@ function AdminDashboard() {
                 selectedNavItem === 'addproduct' ? <AddProductPage /> : <></>
             }
             {
-                selectedNavItem === 'vieworder' ? <h1>View Orders</h1> : <></>
+                selectedNavItem === 'vieworder' ? <ViewAllOrders /> : <></>
             }
-            {
+            {/* {
                 selectedNavItem === 'viewuser' ? <h1>View Users</h1> : <></>
-            }
+            } */}
 
            </div>
 

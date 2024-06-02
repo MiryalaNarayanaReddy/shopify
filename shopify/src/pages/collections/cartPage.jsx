@@ -139,6 +139,30 @@ function CartPage({ cart, setCart }) {
 
     }, []);
 
+
+    const handleOrder = () => {
+        axios.post(`${base_url}/cart/order`, {}, {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        })
+            .then((res) => {
+                if(res.status === 200)
+                    {
+                        alert('Order Placed');
+                        window.location = '/myorders';
+                    }
+                else
+                    {
+                        alert('Failed to place order');
+                    }
+            })
+            .catch((err) => {
+                console.log(err);
+                alert('Failed to place order');
+            })
+        }   
+
     return (
 
         cart.products.length === 0 ? (
@@ -192,7 +216,7 @@ function CartPage({ cart, setCart }) {
                             <td className=" p-2 text-red-500 font-bold"> </td>
                             <td className=" p-2 text-lg"> {total}</td>
                             <td className=" p-2 text-lg"> $ {totalprice}</td>
-                            <td className=" p-2 text-lg"> <button className="bg-red-500 text-white p-2 rounded-lg" onClick={removeCart}>Clear Cart</button></td>
+                            <td className=" p-2 text-lg"> <button className="bg-red-500 text-white text-sm p-2 rounded-lg hover:bg-red-600" onClick={removeCart}>Clear Cart</button></td>
                         </tr>
 
                     </tbody>
@@ -201,7 +225,7 @@ function CartPage({ cart, setCart }) {
 
                 {/* buy button */}
                 <div className="flex flex-row justify-center items-center mt-4">
-                    <button className="bg-green-500 text-white p-2 rounded-lg">Order</button>
+                    <button className="bg-green-500 text-white p-2 rounded-lg" onClick={handleOrder}>Place Order</button>
                 </div>
 
             </div>

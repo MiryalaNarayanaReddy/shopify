@@ -22,7 +22,7 @@ function Profile() {
 
     return (
         <div className="flex flex-col items-center justify-center mt-16">
-            <div className="w-1/3 mt-16 p-4 border-2 border-gray-200 rounded-md">
+            <div className="w-1/3 mt-16 p-4 border-2 border-gray-200 rounded-md shadow-lg">
                 <div className="text-4xl font-bold text-center">
 
                     {user.role === 'admin' ? 'Admin Profile' : 'User Profile'}

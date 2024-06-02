@@ -127,15 +127,15 @@ function NavBar({ selectedNavItem, cart }) {
 
                             {
                                 localStorage.getItem('user') ? 
-                                    <a href="/profile" className="text-xl pl-6 pr-6 pt-2 pb-2  cursor-pointer">
+                                    // <a href="/profile" className="text-xl pl-6 pr-6 pt-2 pb-2  cursor-pointer">
                                         <Avatar name={JSON.parse(localStorage.getItem('user')).name} />
-                                    </a>
+                                    // </a>
                                  : 
 
                                     localStorage.getItem('admin')? 
-                                        <a href="/profile" className="text-xl pl-6 pr-6 pt-2 pb-2 cursor-pointer">
+                                        // <a href="/profile" className="text-xl pl-6 pr-6 pt-2 pb-2 cursor-pointer">
                                             <Avatar name="Admin" />
-                                        </a>
+                                        // </a>
                                     : 
                                        <></>
                                     

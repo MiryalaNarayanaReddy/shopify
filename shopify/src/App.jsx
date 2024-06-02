@@ -20,6 +20,7 @@ import axios from 'axios'
 import { base_url } from './helper'
 import Profile from './pages/auth/Profile'
 import { jwtDecode } from 'jwt-decode'
+import MyOrders from './pages/collections/myOrders'
 
 function App() {
   const [selectedNavItem, setSelectedNavItem] = useState(''); // Shop, Men, Women, Kids
@@ -96,6 +97,7 @@ function App() {
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/myorders" element={<MyOrders /> } />
 
         </Routes>
       </BrowserRouter>

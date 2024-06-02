@@ -25,11 +25,11 @@ export function AdminNavBar({ selectedNavItem, setSelectedNavItem }) {
                 onClick={(e) => navclick(e, 'vieworder')}>
                 View Orders
             </a>
-            <a href="/admin/viewuser"
+            {/* <a href="/admin/viewuser"
                 className="w-full text-center p-4 hover:bg-gray-300 border-t-2 border-gray-400"
                 onClick={(e) => navclick(e, 'viewuser')}>
                 View Users
-            </a>
+            </a> */}
 
         </div>
     )
