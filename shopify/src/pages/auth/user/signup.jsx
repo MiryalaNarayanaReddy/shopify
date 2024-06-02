@@ -40,7 +40,7 @@ function SignUp() {
 
             <div className="w-1/3 mt-16 p-4 border-2 border-gray-200 rounded-md">
                 <div className="text-4xl font-bold text-center">
-                    Sign Up
+                    User Sign Up
                 </div>
                 <div className="mt-4">
                     <input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} className="w-full p-2 border-2 border-gray-200 rounded-md" />

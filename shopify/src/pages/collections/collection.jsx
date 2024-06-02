@@ -29,12 +29,7 @@ function CollectionPage({cart,setCart}) {
 
         const category = localStorage.getItem('category');
 
-        axios.get(`${base_url}/products/category/${category}`,
-            {
-                headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('token')
-                }
-            })
+        axios.get(`${base_url}/products/category/${category}`)
 
             .then((res) => {
                 console.log(res.data);

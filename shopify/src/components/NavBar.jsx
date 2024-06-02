@@ -30,6 +30,12 @@ function NavBar({ selectedNavItem, cart }) {
     const navclick = (e, title) => {
         console.log(selectedNavItem);
 
+        if (selectedNavItem === title) {
+            e.preventDefault();
+            return;
+        }
+
+
         // e.preventDefault();
         // setSelectedNavItem(title);
 
@@ -65,13 +71,13 @@ function NavBar({ selectedNavItem, cart }) {
                     ) : <></>
                 }
                 <div className="col-span-1">
-                    <NavItem title="Shop" link="/" selected={selectedNavItem === 'shop'} onclick={(e) => navclick(e, 'shop')} />
+                    <NavItem title="Home" link="/" selected={selectedNavItem === 'home'} onclick={(e) => navclick(e, 'home')} />
                 </div>
                 <div className="col-span-1">
                     <NavItem title="Men" link="/collections/men" selected={selectedNavItem === 'men'} onclick={(e) => navclick(e, 'men')} />
                 </div>
                 <div className="col-span-1">
-                    <NavItem title="Women" link="/collections/women" selected={selectedNavItem === "omen"} onclick={(e) => navclick(e, 'women')} />
+                    <NavItem title="Women" link="/collections/women" selected={selectedNavItem === "women"} onclick={(e) => navclick(e, 'women')} />
                 </div>
                 <div className="col-span-1">
                     <NavItem title="Kids" link="/collections/kids" selected={selectedNavItem === "kids"} onclick={(e) => navclick(e, 'kids')} />
@@ -88,9 +94,14 @@ function NavBar({ selectedNavItem, cart }) {
                             Logout
                         </a>
                     ) : (
-                        <a href="/login" className="text-xl pl-6 pr-6 pt-2 pb-2 border-2 border-black rounded-full cursor-pointer">
-                            Login
-                        </a>
+                        <div>
+                            <a href="/login" className="text-xl pl-6 pr-6 pt-2 pb-2 border-2 border-black rounded-full cursor-pointer">
+                                Login
+                            </a>
+                            <a href="/user/signup" className="text-xl pl-6 pr-6 pt-2 pb-2 border-2 border-black rounded-full cursor-pointer">
+                                Signup
+                            </a>
+                        </div>
                     )
 
                 }
@@ -111,8 +122,8 @@ function NavBar({ selectedNavItem, cart }) {
                             <div className="absolute bg-red-500 text-white rounded-full w-4 h-4 flex justify-center items-center -top-1 -right-1">
                                 {/* length of cart products */}
 
-                                {cart.products.length} 
-                               
+                                {cart.products.length}
+
                             </div>
                         }
                         <img src={CartIcon} alt="icon" className="w-8 h-8 bottom-0 left-0" />
@@ -121,33 +132,44 @@ function NavBar({ selectedNavItem, cart }) {
 
                 </div>
 
-                <div className="flex flex-row items-center gap-2">
-                        
-                        <div className="text-xl">
+                <div className="flex flex-row items-center ">
 
-                            {
-                                localStorage.getItem('user') ? 
-                                    // <a href="/profile" className="text-xl pl-6 pr-6 pt-2 pb-2  cursor-pointer">
-                                        <Avatar name={JSON.parse(localStorage.getItem('user')).name} />
+                    <div className="text-xl">
+
+                        {
+                            localStorage.getItem('user') ?
+                                // <a href="/profile" className="text-xl pl-6 pr-6 pt-2 pb-2  cursor-pointer">
+                                <Avatar name={JSON.parse(localStorage.getItem('user')).name} />
+
+                                // </a>
+                                :
+
+                                localStorage.getItem('admin') ?
+                                    // <a href="/profile" className="text-xl pl-6 pr-6 pt-2 pb-2 cursor-pointer">
+                                    <Avatar name="Admin" />
                                     // </a>
-                                 : 
-
-                                    localStorage.getItem('admin')? 
-                                        // <a href="/profile" className="text-xl pl-6 pr-6 pt-2 pb-2 cursor-pointer">
-                                            <Avatar name="Admin" />
-                                        // </a>
-                                    : 
-                                       <></>
-                                    
-                                
-                            }
-                            
-                        </div>
+                                    :
+                                    <></>
 
 
-
+                        }
 
                     </div>
+
+                    {/* my orders */}
+
+                    <div className="pl-2 relative">
+                        <div className='flex flex-row items-center ' onClick={() => window.location.href = '/myorders'}>
+
+                            <div className="text-xl pl-6 pr-6 pt-2 pb-2 cursor-pointer bg-purple-500 text-white rounded-full">
+                                My Orders
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
             </div>
         </div >
     )

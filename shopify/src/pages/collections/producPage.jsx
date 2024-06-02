@@ -15,6 +15,11 @@ function ProductPage({ product ,cart,setCart }) {
 
     const addTocart = () => {
         // console.log('added to cart')
+
+        if(localStorage.getItem('token') === null){
+            window.location.href = '/login';
+        }
+
         axios.post(`${base_url}/cart/add`, {
             product_name: product.name,
             product_id: product._id,

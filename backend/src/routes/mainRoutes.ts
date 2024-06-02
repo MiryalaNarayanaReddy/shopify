@@ -12,7 +12,7 @@ const mainRoutes = express.Router();
 mainRoutes.use('/auth/user', authUserRoutes);
 mainRoutes.use('/auth/admin', authAdminRoutes);
 
-mainRoutes.use('/products',authCheck, productRoutes);
+mainRoutes.use('/products', productRoutes);
 mainRoutes.use('/cart',authCheck, cartRoutes);
 
 export { mainRoutes };

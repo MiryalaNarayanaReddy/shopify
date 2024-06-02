@@ -25,7 +25,7 @@ export function ItemCard({ item ,onClick }) {
                 <img
                 src={`data:${item.images[0].contentType};base64,${item.images[0].data}`}
                 //  src={`data:${item.images[0].contentType};base64,${base64String}`}
-                alt={item.name} />
+                alt={item.name} className="w-full h-50 object-cover" />
             </div>
             <div className="col-span-1">
                 {item.name}

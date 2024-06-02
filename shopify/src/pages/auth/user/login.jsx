@@ -40,7 +40,7 @@ function Login(){
 
             <div className="w-2/3 mt-16 p-4 border-2 border-gray-200 rounded-md">
                 <div className="text-4xl font-bold text-center">
-                    Login
+                   User Login
                 </div>
                 <div className="mt-4">
                     <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full p-2 border-2 border-gray-200 rounded-md" />
@@ -53,7 +53,7 @@ function Login(){
                 </div>
 
                 <div className="mt-4 text-center">
-                    Don't have an account? <a href="/signup" className="text-blue-500">Sign Up</a>
+                    Don't have an account? <a href="/user/signup" className="text-blue-500">Sign Up</a>
                 </div>
 
             </div>
