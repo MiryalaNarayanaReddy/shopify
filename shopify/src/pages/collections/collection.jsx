@@ -49,6 +49,7 @@ function CollectionPage({cart,setCart}) {
             .catch((err) => {
                 alert("Error fetching products");
                 console.log(err);
+                setLoading(false);
             });
 
         // for (let i = 0; i < sample_data.length; i++) {

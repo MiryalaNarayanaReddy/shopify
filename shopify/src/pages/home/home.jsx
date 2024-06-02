@@ -45,6 +45,7 @@ function Home({cart,setCart}) {
             .catch((err) => {
                 alert("Error fetching products");
                 console.log(err);
+                setLoading(false);
             });
 
     }, []);
