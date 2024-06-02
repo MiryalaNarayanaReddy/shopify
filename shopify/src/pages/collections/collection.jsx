@@ -14,6 +14,8 @@ import banner_image_women from "../../assets/banner images/banner_women.png"
 import banner_image_kids from "../../assets/banner images/banner_kids.png"
 
 import ProductPage from "./producPage";
+import { ItemSkeleton } from "../../components/ItemCards";
+
 
 function CollectionPage({cart,setCart}) {
 
@@ -34,9 +36,18 @@ function CollectionPage({cart,setCart}) {
             .then((res) => {
                 console.log(res.data);
                 setProducts(res.data);
+
+                // add delay to simulate loading
+
+                // setTimeout(() => {
+                //     setLoading(false);
+                // }, 2000);
+
+
                 setLoading(false);
             })
             .catch((err) => {
+                alert("Error fetching products");
                 console.log(err);
             });
 
@@ -55,8 +66,6 @@ function CollectionPage({cart,setCart}) {
         else {
             setBannerImage(banner_image_kids)
         }
-
-        setLoading(false);
 
     }, []);
 
@@ -84,7 +93,9 @@ function CollectionPage({cart,setCart}) {
 
                     <div className="grid grid-cols-4 gap-4">
                         {loading ? (
-                            <h1>Loading...</h1>
+                            
+                                <ItemSkeleton cardCount={8} />
+                            
                         ) : (
                             products.map((product) => (
                                 <ItemCard key={product.id} item={product} onClick={() => handleSelectProduct(product)} />

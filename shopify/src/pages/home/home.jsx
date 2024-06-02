@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { ItemCard } from "../../components/ItemCards";
+import { ItemCard, ItemSkeleton } from "../../components/ItemCards";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { useSearchParams } from 'react-router-dom'
@@ -34,29 +34,18 @@ function Home({cart,setCart}) {
             .then((res) => {
                 console.log(res.data);
                 setProducts(res.data);
+
+                // // add delay to simulate loading
+                // setTimeout(() => {
+                //     setLoading(false);
+                // }, 2000);
+
                 setLoading(false);
             })
             .catch((err) => {
+                alert("Error fetching products");
                 console.log(err);
             });
-
-        // for (let i = 0; i < sample_data.length; i++) {
-        //     if (sample_data[i].category === category) {
-        //         setProducts((prev) => [...prev, sample_data[i]]);
-        //     }
-        // }
-
-        // if (category === "men") {
-        //     setBannerImage(banner_image_men)
-        // }
-        // else if (category === "women") {
-        //     setBannerImage(banner_image_women)
-        // }
-        // else {
-            // setBannerImage(banner_image_kids)
-        // }
-
-        setLoading(false);
 
     }, []);
 
@@ -84,7 +73,7 @@ function Home({cart,setCart}) {
 
                     <div className="grid grid-cols-4 gap-4">
                         {loading ? (
-                            <h1>Loading...</h1>
+                            <ItemSkeleton cardCount={8} />
                         ) : (
                             products.map((product) => (
                                 <ItemCard key={product.id} item={product} onClick={() => handleSelectProduct(product)} />
