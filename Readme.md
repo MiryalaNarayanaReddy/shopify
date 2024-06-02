@@ -81,6 +81,8 @@ docker run -p 4000:4000 shopify
 ```
 but database will not be connected to the container so you have to use the following command to connect the database to the container. this will need a mongodb container running on your machine and connected to same network as the shopify container
 
+## workflows 
+There is a github workflow file that creates **docker image** and pushes to **docker hub** as soon as you make a push/commit to master. This needs some credentials which you need to put then in github secrets and this file has my docker hub repo where it pushes image. (no worries it won't push to my docker hub since you need my credentials.)
 
 ## Hosting 
 
