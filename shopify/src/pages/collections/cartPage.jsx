@@ -50,9 +50,9 @@ function CartItem({ cartItem, setCart, cart }) {
                 <div className="text-lg font-bold ">{cartItem.product_name}</div>
 
             </td>
-            <td className=" p-2 text-red-500 font-bold">${cartItem.price_per_unit}</td>
+            <td className=" p-2 text-red-500 font-bold">{cartItem.price_per_unit}</td>
             <td className=" p-2 text-lg">{cartItem.quantity}</td>
-            <td className=" p-2 text-lg"> ${cartItem.price_per_unit * cartItem.quantity}</td>
+            <td className=" p-2 text-lg"> {cartItem.price_per_unit * cartItem.quantity}</td>
             <td className=" p-2 text-lg cursor-pointer" onClick={() => { deleteFromCart({ product_id: cartItem.product_id }) }}>Delete</td>
         </tr>
 
@@ -215,7 +215,7 @@ function CartPage({ cart, setCart }) {
 
                             <td className=" p-2 text-red-500 font-bold"> </td>
                             <td className=" p-2 text-lg"> {total}</td>
-                            <td className=" p-2 text-lg"> $ {totalprice}</td>
+                            <td className=" p-2 text-lg"> {totalprice}</td>
                             <td className=" p-2 text-lg"> <button className="bg-red-500 text-white text-sm p-2 rounded-lg hover:bg-red-600" onClick={removeCart}>Clear Cart</button></td>
                         </tr>
 
