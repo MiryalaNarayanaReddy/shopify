@@ -86,10 +86,10 @@ function ProductPage({ product ,cart,setCart }) {
                     <div className='flex flex-row p-2 m-2 justify-left items-center'>
 
                         <div className='text-4xl font-bold text-red-500 pr-4'>
-                             {product.new_price}
+                            Rs {product.new_price}
                         </div>
                         <div className='line-through text-2xl pr-4  text-gray-500'>
-                            {product.old_price}
+                           Rs {product.old_price}
                         </div>
 
                         <div className='text-2xl font-bold text-green-500 '>

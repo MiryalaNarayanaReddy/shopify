@@ -32,10 +32,10 @@ export function ItemCard({ item, onClick }) {
             </div>
 
             <div className="col-span-1 text-xl font-bold">
-                New Price: {item.new_price}
+                New Price: Rs  {item.new_price}
             </div>
-            <div className="col-span-1">
-                Old Price: {item.old_price}
+            <div className="col-span-1 line-through text-red-500">
+                Old Price: Rs {item.old_price}
             </div>
         </div>
     )
