@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import axios from 'axios'
 import { base_image_url, base_url } from '../../helper'
 
-function ProductPage({ product ,cart,setCart }) {
+function ProductPage({ product ,cart, setCart, setSelectedProduct }) {
 
     // React.useEffect(() => {
     //     axios.get('https://fakestoreapi.com/products')
@@ -55,7 +55,18 @@ function ProductPage({ product ,cart,setCart }) {
     }, [selectedImage]);
 
     return (
-        <div className="grid grid-cols-12 justify-center items-center mt-16 bg-white rounded-lg p-4 m-4  shadow-lg h-[90vh] ">
+        <div className=" mt-16">
+
+            <div className="grid grid-cols-1 justify-left mt-2 items-center w-40" onClick={() => setSelectedProduct(null)}>
+                <button className="bg-blue-200 text-black p-2 mrounded-full hover:bg-blue-400 cursor-pointer border-4  shadow-lg transform delay-100 "  >
+                    Back
+                </button>
+            </div>
+
+    
+        <div className="grid grid-cols-12 justify-center items-center bg-white rounded-lg p-4   shadow-lg h-[90vh] ">
+            {/* back button */}
+
 
             <div className='cols-span-4 grid-cols-1  overflow-y-auto h-[70vh]'>
                 {
@@ -122,12 +133,13 @@ function ProductPage({ product ,cart,setCart }) {
                     <input type='number' value={quantity} onChange={(e) => setQuantity(e.target.value)} className='border-2 border-gray-200 p-2 m-2 w-20' />
                 </div>
 
-                <button className='col-span-1 bg-blue-500 text-white rounded-lg p-2 m-2' onClick={addTocart}>
+                <button className='col-span-1 bg-blue-500 text-white rounded-lg p-2 m-2 cursor-pointer hover:bg-green-500'
+                onClick={addTocart}>
                     Add to Cart
                 </button>
             </div>
         </div>
-
+        </div>
     )
 }
 

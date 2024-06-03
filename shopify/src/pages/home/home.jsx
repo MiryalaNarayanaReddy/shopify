@@ -15,11 +15,11 @@ import banner_image_kids from "../../assets/banner images/banner_kids.png"
 
 import ProductPage from "../collections/producPage";
 
-function Home({cart,setCart}) {
+function Home({ cart, setCart }) {
 
     const [products, setProducts] = useState([]);
     // const [banner_image, setBannerImage] = useState('');
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
 
     const [selectedProduct, setSelectedProduct] = useState(null);
 
@@ -27,31 +27,62 @@ function Home({cart,setCart}) {
 
     useEffect(() => {
 
-        const category = localStorage.getItem('category');
+        // const category = localStorage.getItem('category');
 
-        axios.get(`${base_url}/products/all`)
-
-            .then((res) => {
-                console.log(res.data);
-                setProducts(res.data);
-
-                // // add delay to simulate loading
-                // setTimeout(() => {
-                //     setLoading(false);
-                // }, 2000);
-
+        const timestamp = localStorage.getItem('timestamp');
+        if (timestamp) {
+            const time = Date.now() - timestamp;
+            if (time < 1000 * 60 * 10) {  // 10 minutes
+                const data = JSON.parse(localStorage.getItem('products'));
+                setProducts(data);
                 setLoading(false);
-            })
-            .catch((err) => {
-                alert("Error fetching products");
-                console.log(err);
-                setLoading(false);
-            });
+            }
+            else{
+                localStorage.removeItem('timestamp');
+                localStorage.removeItem('products');
+            }
+        }
+       
+        if (!localStorage.getItem('timestamp')) {
+
+            setLoading(true);
+
+            axios.get(`${base_url}/products/all`)
+                .then((res) => {
+                    // console.log(res.data);
+                    setProducts(res.data);
+
+                    // // add delay to simulate loading
+                    // setTimeout(() => {
+                    //     setLoading(false);
+                    // }, 2000);
+
+                    setLoading(false);
+
+                    // save data in local storage with time stamp
+
+                    localStorage.setItem('timestamp', Date.now());
+                    localStorage.setItem('products', JSON.stringify(res.data));
+                })
+                .catch((err) => {
+                    alert("Error fetching products");
+                    console.log(err);
+                    setLoading(false);
+                });
+        }
 
     }, []);
 
     useEffect(() => {
-        console.log(products);
+        // console.log(products);
+        if (selectedProduct !== null) {
+            localStorage.setItem('selectedProduct', 1);
+
+        }
+        else {
+            localStorage.setItem('selectedProduct', 0);
+        }
+
     }, [selectedProduct]);
 
 
@@ -65,7 +96,7 @@ function Home({cart,setCart}) {
     return (
 
         selectedProduct !== null ?
-            <ProductPage product={selectedProduct} cart={cart} setCart={setCart} />
+            <ProductPage product={selectedProduct} cart={cart} setCart={setCart} setSelectedProduct={setSelectedProduct} />
 
             :
             (

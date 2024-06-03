@@ -17,46 +17,75 @@ import ProductPage from "./producPage";
 import { ItemSkeleton } from "../../components/ItemCards";
 
 
-function CollectionPage({cart,setCart}) {
+function CollectionPage({ cart, setCart }) {
 
     const [products, setProducts] = useState([]);
     const [banner_image, setBannerImage] = useState('');
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
 
     const [selectedProduct, setSelectedProduct] = useState(null);
 
     // get all products from the category
 
+
     useEffect(() => {
 
         const category = localStorage.getItem('category');
 
-        axios.get(`${base_url}/products/category/${category}`)
+        const timestamp = localStorage.getItem('timestamp');
 
+        if (timestamp) {
+            const time = Date.now() - timestamp;
+            
+            if (time < 1000 * 60 * 10) {  // 10 minutes
+
+                const data = JSON.parse(localStorage.getItem('products'));
+                // const data = JSON.parse(localStorage.getItem(category));
+
+                const filteredData = data.filter((item) => item.category === category);
+
+                setProducts(filteredData);
+                setLoading(false);
+               
+            }
+            else{
+                localStorage.removeItem('timestamp');
+                localStorage.removeItem('products');
+            }
+        }
+
+        if(!localStorage.getItem('timestamp')){
+            setLoading(true);
+
+            axios.get(`${base_url}/products/all`)
             .then((res) => {
-                console.log(res.data);
-                setProducts(res.data);
+                // console.log(res.data);
+                // setProducts(res.data);
 
-                // add delay to simulate loading
+                // // add delay to simulate loading
 
                 // setTimeout(() => {
                 //     setLoading(false);
                 // }, 2000);
 
+                const filteredData = res.data.filter((item) => item.category === category);
+                setProducts(filteredData);
 
                 setLoading(false);
+
+                // save data in local storage with time stamp
+
+                localStorage.setItem('timestamp', Date.now());
+                localStorage.setItem('products', JSON.stringify(res.data));
+
             })
             .catch((err) => {
                 alert("Error fetching products");
                 console.log(err);
                 setLoading(false);
             });
+        }
 
-        // for (let i = 0; i < sample_data.length; i++) {
-        //     if (sample_data[i].category === category) {
-        //         setProducts((prev) => [...prev, sample_data[i]]);
-        //     }
-        // }
 
         if (category === "men") {
             setBannerImage(banner_image_men)
@@ -71,7 +100,15 @@ function CollectionPage({cart,setCart}) {
     }, []);
 
     useEffect(() => {
-        console.log(products);
+        // console.log(products);
+        if (selectedProduct !== null) {
+            localStorage.setItem('selectedProduct', 1);
+
+        }
+        else {
+            localStorage.setItem('selectedProduct', 0);
+        }
+
     }, [selectedProduct]);
 
 
@@ -85,7 +122,7 @@ function CollectionPage({cart,setCart}) {
     return (
 
         selectedProduct !== null ?
-            <ProductPage product={selectedProduct} cart={cart} setCart={setCart} />
+            <ProductPage product={selectedProduct} cart={cart} setCart={setCart} setSelectedProduct={setSelectedProduct} />
 
             :
             (
@@ -94,9 +131,9 @@ function CollectionPage({cart,setCart}) {
 
                     <div className="grid grid-cols-4 gap-4">
                         {loading ? (
-                            
-                                <ItemSkeleton cardCount={8} />
-                            
+
+                            <ItemSkeleton cardCount={8} />
+
                         ) : (
                             products.map((product) => (
                                 <ItemCard key={product.id} item={product} onClick={() => handleSelectProduct(product)} />

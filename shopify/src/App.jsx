@@ -23,14 +23,14 @@ import { jwtDecode } from 'jwt-decode'
 import MyOrders from './pages/collections/myOrders'
 
 function App() {
-  const [selectedNavItem, setSelectedNavItem] = useState('home'); // Shop, Men, Women, Kids
+  const [selectedNavItem, setSelectedNavItem] = useState(''); // Shop, Men, Women, Kids
   const [cart, setCart] = useState({ products: [] }); // [{product_id: 1, quantity: 1, price_per_unit: 100}]
 
   useEffect(() => {
 
     const token = localStorage.getItem('token');
 
-
+    localStorage.setItem('selectedProduct', 0);
 
     if (token && jwtDecode(token).exp < Date.now() / 1000) {
       localStorage.clear();
@@ -105,10 +105,12 @@ function App() {
 
         localStorage.getItem('admin') ?
           <></> :
-          <div className="w-full mt-16">
-            <Footer />
-          </div>
-
+         // <div className="w-full mt-16">
+   
+            <div className="w-full mt-16 ">
+              <Footer />
+            </div>
+         
       }
 
       {/* 

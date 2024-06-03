@@ -19,29 +19,54 @@ function NavItem({ title, link, selected, onclick }) {
 
 function NavBar({ selectedNavItem, cart }) {
 
-    // const [cartItems, setCartItems] = useState(null);
-
-
-    // 
-
-    // console.log(selectedNavItem);
-
 
     const navclick = (e, title) => {
-        console.log(selectedNavItem);
+        e.preventDefault();
+        // console.log(selectedNavItem);
 
         if (selectedNavItem === title) {
-            e.preventDefault();
-            return;
+
+            if (localStorage.getItem('selectedProduct') == 0) {
+                return;
+            }
+            else {
+                localStorage.setItem('selectedProduct', 0);
+            }
         }
 
 
-        // e.preventDefault();
-        // setSelectedNavItem(title);
-
         localStorage.setItem('category', title);
 
-        window.location.href = '/collections/' + title;
+        if (title == "men" || title == "women" || title == "kids") {
+            window.location.href = '/collections/' + title;
+        }
+        else {
+
+            if (title == "cart") {
+                window.location.href = '/cart';
+            }
+            else if (title == "dashboard") {
+                window.location.href = '/admin/dashboard';
+            }
+            else if (title == "profile") {
+                window.location.href = '/profile';
+            }
+            else if (title == "myorders") {
+                window.location.href = '/myorders';
+            }
+            else if (title == "login") {
+                window.location.href = '/login';
+            }
+            else if (title == "signup") {
+                window.location.href = '/user/signup';
+            }
+            else if (title == "home") {
+                window.location.href = '/';
+            }
+
+        }
+
+
     }
 
 
@@ -49,7 +74,7 @@ function NavBar({ selectedNavItem, cart }) {
         <div className="flex flex-row justify-around bg-white shadow-lg fixed top-0 w-full z-10 h-16 items-center">
 
             {/*  website name */}
-            <div className="flex flex-row items-center gap-2 cursor-pointer" onClick={() => window.location.href = '/'}>
+            <div className="flex flex-row items-center gap-2 cursor-pointer" onClick={(e) => navclick(e, 'home')}>
                 <div>
                     <img src={Logo} alt="icon" className="w-10 h-10" />
                 </div>
@@ -95,10 +120,10 @@ function NavBar({ selectedNavItem, cart }) {
                         </a>
                     ) : (
                         <div>
-                            <a href="/login" className="text-xl pl-6 pr-6 pt-2 pb-2 border-2 border-black rounded-full cursor-pointer">
+                            <a className="text-xl pl-6 pr-6 pt-2 pb-2 border-2 border-black rounded-full cursor-pointer" onClick={(e) => navclick(e, 'login')}>
                                 Login
                             </a>
-                            <a href="/user/signup" className="text-xl pl-6 pr-6 pt-2 pb-2 border-2 border-black rounded-full cursor-pointer">
+                            <a className="text-xl pl-6 pr-6 pt-2 pb-2 border-2 border-black rounded-full cursor-pointer" onClick={(e) => navclick(e, 'signup')}>
                                 Signup
                             </a>
                         </div>
@@ -114,7 +139,7 @@ function NavBar({ selectedNavItem, cart }) {
                             0
                         </div> */}
 
-                    <div className="relative w-8 h-8 cursor-pointer" onClick={() => window.location.href = '/cart'}>
+                    <div className="relative w-8 h-8 cursor-pointer" onClick={(e) => navclick(e, 'cart')}>
                         {
 
                             cart &&
@@ -160,7 +185,7 @@ function NavBar({ selectedNavItem, cart }) {
                     {
                         localStorage.getItem('token') ? (
                             <div className="pl-2 relative">
-                                <div className='flex flex-row items-center ' onClick={() => window.location.href = '/myorders'}>
+                                <div className='flex flex-row items-center ' onclick={(e) => navclick(e, 'myorders')}>
 
                                     <div className="text-xl pl-6 pr-6 pt-2 pb-2 cursor-pointer bg-purple-500 text-white rounded-full">
                                         My Orders

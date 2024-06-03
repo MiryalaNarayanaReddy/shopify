@@ -19,7 +19,9 @@ export function ItemCard({ item, onClick }) {
 
     // const base64String = arrayBufferToBase64(item.images[0].data);
     return (
-        <div className="grid grid-cols-1 justify-space-around items-center bg-white rounded-lg p-4 m-4 shadow-lg " onClick={onClick}>
+        <div className="grid grid-cols-1 justify-space-around items-center bg-white rounded-lg p-4 m-4 shadow-lg cursor-pointer 
+        hover:shadow-xl transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-105"
+        onClick={onClick}>
             <div className="col-span-1">
 
                 <img
