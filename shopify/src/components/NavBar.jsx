@@ -185,7 +185,7 @@ function NavBar({ selectedNavItem, cart }) {
                     {
                         localStorage.getItem('token') ? (
                             <div className="pl-2 relative">
-                                <div className='flex flex-row items-center ' onclick={(e) => navclick(e, 'myorders')}>
+                                <div className='flex flex-row items-center ' onClick={(e) => navclick(e, 'myorders')}>
 
                                     <div className="text-xl pl-6 pr-6 pt-2 pb-2 cursor-pointer bg-purple-500 text-white rounded-full">
                                         My Orders

@@ -19,7 +19,7 @@ function OrderCard({ order }) {
             (res) => {
                 console.log(res);
                 alert("Status updated");
-                window.location.reload();
+                window.location.reload();   // Reload the page
             }
         ).catch(
             (err) => {
@@ -85,9 +85,11 @@ function ViewAllOrders() {
 
     return (
         <div>
-            {orders.map((order) => (
-                <OrderCard order={order} />
-            ))}
+           {
+            orders.length > 0 ? orders.map((order) => (
+                <OrderCard key={order._id} order={order} />
+            )) : <h1>No orders found</h1>
+           }
         </div>
     );
 }

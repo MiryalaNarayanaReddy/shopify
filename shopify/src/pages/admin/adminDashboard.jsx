@@ -10,7 +10,7 @@ import ViewAllOrders from './viewAllOrders';
 
 function AdminDashboard() {
 
-    const [selectedNavItem, setSelectedNavItem] = useState(''); // subnav items
+    const [selectedNavItem, setSelectedNavItem] = useState('viewproduct'); // subnav items
     // viewproduct
     // addproduct
     // vieworder

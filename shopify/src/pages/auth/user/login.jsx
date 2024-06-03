@@ -24,7 +24,7 @@ function Login(){
 
                 alert(res.data.message)
 
-
+                sessionStorage.setItem('category'  , 'home')
                 window.location.href = '/';
             }
 

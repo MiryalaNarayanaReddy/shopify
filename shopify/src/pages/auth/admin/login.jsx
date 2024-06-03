@@ -23,6 +23,8 @@ function AdminLogin() {
 
                 alert(res.data.message)
 
+                sessionStorage.setItem('category'  , 'dashboard')
+
                 window.location.href = '/admin/dashboard';
             }
         })

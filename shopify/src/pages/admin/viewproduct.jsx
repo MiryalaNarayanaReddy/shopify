@@ -1,5 +1,6 @@
 
 import { ItemCard } from "../../components/ItemCards";
+import { ItemSkeleton } from "../../components/ItemCards";
 
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -50,7 +51,7 @@ export default function ViewProduct() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 ">
                 {loading ? (
-                    <h1>Loading...</h1>
+                    <ItemSkeleton cardCount={8} />
                 ) : (
                     products.map((product) => (
                         <ItemCard key={product.id} item={product} onClick={() => setSelectedProduct(product)} />
