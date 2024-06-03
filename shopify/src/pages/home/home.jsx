@@ -26,9 +26,6 @@ function Home({ cart, setCart }) {
 
     const [selectedProduct, setSelectedProduct] = useState(null);
 
-    // get all products from the category
-
-
     useEffect(async () => {
         const db = await openDB('MyDatabase', 1);
 

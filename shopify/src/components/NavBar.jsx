@@ -35,7 +35,7 @@ function NavBar({ selectedNavItem, cart }) {
         }
 
 
-        localStorage.setItem('category', title);
+        sessionStorage.setItem('category', title);
 
         if (title == "men" || title == "women" || title == "kids") {
             window.location.href = '/collections/' + title;

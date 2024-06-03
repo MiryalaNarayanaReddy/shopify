@@ -23,7 +23,8 @@ import { jwtDecode } from 'jwt-decode'
 import MyOrders from './pages/collections/myOrders'
 
 function App() {
-  const [selectedNavItem, setSelectedNavItem] = useState(''); // Shop, Men, Women, Kids
+  const [selectedNavItem, setSelectedNavItem] = useState('home');
+  // Shop, Men, Women, Kids
   const [cart, setCart] = useState({ products: [] }); // [{product_id: 1, quantity: 1, price_per_unit: 100}]
 
   useEffect(() => {
@@ -36,16 +37,17 @@ function App() {
       localStorage.clear();
     }
 
-
-    const category = localStorage.getItem('category');
-
-    if (category === null) {
+    if(sessionStorage.getItem('category')){
+      setSelectedNavItem(sessionStorage.getItem('category'));
+    }
+    else{
       setSelectedNavItem('home');
-    }
-    else {
-      setSelectedNavItem(category);
+      sessionStorage.setItem('category', 'home');
+      window.location.href = '/';
     }
 
+    // sessionStorage.setItem('category', selectedNavItem);
+  
     try {
 
       axios.get(base_url + '/cart', {
@@ -62,8 +64,6 @@ function App() {
           console.log(err);
           setCart({ products: [] })
         });
-
-      
 
     }
     catch (err) {

@@ -32,7 +32,11 @@ function CollectionPage({ cart, setCart }) {
 
     useEffect(async () => {
 
-        const category = localStorage.getItem('category');
+        const category = sessionStorage.getItem('category');
+
+        if(!category){
+            window.location.href = '/';
+        }
 
         const db = await openDB('MyDatabase', 1);
         const timestamp = await getFromDB(db, 'products', 'timestamp');// get timestamp from indexedDB
