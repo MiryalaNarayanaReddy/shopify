@@ -15,6 +15,9 @@ import banner_image_kids from "../../assets/banner images/banner_kids.png"
 
 import ProductPage from "../collections/producPage";
 
+import { openDB, getFromDB, putToDB } from '../indexDB'
+
+
 function Home({ cart, setCart }) {
 
     const [products, setProducts] = useState([]);
@@ -25,50 +28,44 @@ function Home({ cart, setCart }) {
 
     // get all products from the category
 
-    useEffect(() => {
 
-        // const category = localStorage.getItem('category');
+    useEffect(async () => {
+        const db = await openDB('MyDatabase', 1);
 
-        const timestamp = localStorage.getItem('timestamp');
-        if (timestamp) {
-            const time = Date.now() - timestamp;
-            if (time < 1000 * 60 * 10) {  // 10 minutes
-                const data = JSON.parse(localStorage.getItem('products'));
-                setProducts(data);
+        const timestamp = await getFromDB(db, 'products', 'timestamp');// get timestamp from indexedDB
+
+        if (timestamp && Date.now() - timestamp.value < 1000 * 60 * 10) { // 10 minutes
+
+            const data = await getFromDB(db, 'products', 'data'); // getdata 
+
+            if (data) {
+
+                setProducts(data.value);
                 setLoading(false);
-            }
-            else{
-                localStorage.removeItem('timestamp');
-                localStorage.removeItem('products');
+                return;
             }
         }
-       
-        if (!localStorage.getItem('timestamp')) {
 
-            setLoading(true);
+        setLoading(true);
 
-            axios.get(`${base_url}/products/all`)
-                .then((res) => {
-                    // console.log(res.data);
-                    setProducts(res.data);
+        try {
+            const response = await axios.get(`${base_url}/products/all`); // get all products
 
-                    // // add delay to simulate loading
-                    // setTimeout(() => {
-                    //     setLoading(false);
-                    // }, 2000);
+            setProducts(response.data); // set products
 
-                    setLoading(false);
+            // save to indexedDB
 
-                    // save data in local storage with time stamp
+            await putToDB(db, 'products', { id: 'timestamp', value: Date.now() });
+            await putToDB(db, 'products', { id: 'data', value: response.data });
 
-                    localStorage.setItem('timestamp', Date.now());
-                    localStorage.setItem('products', JSON.stringify(res.data));
-                })
-                .catch((err) => {
-                    alert("Error fetching products");
-                    console.log(err);
-                    setLoading(false);
-                });
+        } catch (error) {
+
+            alert("Error fetching products");
+
+            console.error(error);
+
+        } finally { // using finally block to set loading to false
+            setLoading(false);
         }
 
     }, []);

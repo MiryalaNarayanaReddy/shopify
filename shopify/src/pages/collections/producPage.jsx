@@ -58,7 +58,7 @@ function ProductPage({ product ,cart, setCart, setSelectedProduct }) {
         <div className=" mt-16">
 
             <div className="grid grid-cols-1 justify-left mt-2 items-center w-40" onClick={() => setSelectedProduct(null)}>
-                <button className="bg-blue-200 text-black p-2 mrounded-full hover:bg-blue-400 cursor-pointer border-4  shadow-lg transform delay-100 "  >
+                <button className="bg-orange-200 text-black p-2 mrounded-full hover:bg-orange-400 cursor-pointer border-4  shadow-lg transform delay-100 border-orange-500">
                     Back
                 </button>
             </div>

@@ -16,6 +16,8 @@ import banner_image_kids from "../../assets/banner images/banner_kids.png"
 import ProductPage from "./producPage";
 import { ItemSkeleton } from "../../components/ItemCards";
 
+import { openDB, getFromDB, putToDB } from "../indexDB";
+
 
 function CollectionPage({ cart, setCart }) {
 
@@ -28,64 +30,51 @@ function CollectionPage({ cart, setCart }) {
     // get all products from the category
 
 
-    useEffect(() => {
+    useEffect(async () => {
 
         const category = localStorage.getItem('category');
 
-        const timestamp = localStorage.getItem('timestamp');
+        const db = await openDB('MyDatabase', 1);
+        const timestamp = await getFromDB(db, 'products', 'timestamp');// get timestamp from indexedDB
+        if (timestamp && Date.now() - timestamp.value < 1000 * 60 * 10) { // 10 minutes
 
-        if (timestamp) {
-            const time = Date.now() - timestamp;
-            
-            if (time < 1000 * 60 * 10) {  // 10 minutes
+            const data = await getFromDB(db, 'products', 'data'); // getdata
 
-                const data = JSON.parse(localStorage.getItem('products'));
-                // const data = JSON.parse(localStorage.getItem(category));
+            const filteredData = data.value.filter((item) => item.category === category);
 
-                const filteredData = data.filter((item) => item.category === category);
+            if (data) {
 
                 setProducts(filteredData);
                 setLoading(false);
-               
-            }
-            else{
-                localStorage.removeItem('timestamp');
-                localStorage.removeItem('products');
+
             }
         }
+        else {
 
-        if(!localStorage.getItem('timestamp')){
+
+
             setLoading(true);
 
             axios.get(`${base_url}/products/all`)
-            .then((res) => {
-                // console.log(res.data);
-                // setProducts(res.data);
+                .then(async (res) => {
 
-                // // add delay to simulate loading
+                    const filteredData = res.data.filter((item) => item.category === category);
 
-                // setTimeout(() => {
-                //     setLoading(false);
-                // }, 2000);
+                    setProducts(filteredData);
+                    setLoading(false);
 
-                const filteredData = res.data.filter((item) => item.category === category);
-                setProducts(filteredData);
+                    // save data in local storage with time stamp
 
-                setLoading(false);
+                    await putToDB(db, 'products', { id: 'timestamp', value: Date.now() });
+                    await putToDB(db, 'products', { id: 'data', value: response.data });
 
-                // save data in local storage with time stamp
-
-                localStorage.setItem('timestamp', Date.now());
-                localStorage.setItem('products', JSON.stringify(res.data));
-
-            })
-            .catch((err) => {
-                alert("Error fetching products");
-                console.log(err);
-                setLoading(false);
-            });
+                })
+                .catch((err) => {
+                    alert("Error fetching products");
+                    console.log(err);
+                    setLoading(false);
+                });
         }
-
 
         if (category === "men") {
             setBannerImage(banner_image_men)
